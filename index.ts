@@ -2,7 +2,7 @@ import express, {json} from 'express';
 import cors from 'cors';
 import 'express-async-errors';
 import {handleError} from "./utils/error";
-import {adRouter} from "./routers/ad.router";
+import {homeRouter} from "./routers/home.router";
 
 const app = express();
 app.use(cors({
@@ -11,7 +11,7 @@ app.use(cors({
 app.use(json());
 
 // Routers
-app.use('/', adRouter);
+app.use('/home', homeRouter);
 
 app.use(handleError);
 

@@ -1,19 +1,20 @@
 import {pool} from "../utils/db";
 import {FieldPacket} from "mysql2";
-import {ElementEntity, MaterialEntity, OrderEntity} from "../types";
+import {ItemEntity, OrderEntity, SimpleOrderEntity} from "../types";
 import {ValidationError} from "../utils/error";
 
 type OrderRecordResult = [OrderEntity[], FieldPacket];
-type ElementRecordResult = [ElementEntity[], FieldPacket];
-type MaterialRecordResult = [MaterialEntity[], FieldPacket];
+type ElementRecordResult = [ItemEntity[], FieldPacket];
+type MaterialRecordResult = [ItemEntity[], FieldPacket];
+type SimpleOrderRecordResult = [SimpleOrderEntity[], FieldPacket];
 
 export class OrderRecord implements OrderEntity {
     id: string;
     name: string;
     status: string;
     date: Date;
-    elements: (ElementEntity)[];
-    materials: (MaterialEntity)[];
+    elements: (ItemEntity)[];
+    materials: (ItemEntity)[];
     comment: string;
 
     constructor(obj: OrderEntity) {
@@ -32,6 +33,7 @@ export class OrderRecord implements OrderEntity {
         this.comment = obj.comment;
     }
 
+    // Find one order
     static async getOne(id: string): Promise<OrderRecord | null> {
 
         const [result] = await pool.execute("SELECT * FROM `orders`WHERE id = :id", {
@@ -51,5 +53,9 @@ export class OrderRecord implements OrderEntity {
         return result.length === 0 ? null : SingleOrder;
     }
 
-
+    // Find all orders but return only the id and status of each order.
+    static async findOrderInProgress(): Promise<SimpleOrderEntity> {
+        const [result] = await pool.execute("SELECT id FROM `orders` WHERE status = 'w trakcie'") as any as SimpleOrderRecordResult;
+        return result[0];
+    }
 }

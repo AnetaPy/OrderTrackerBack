@@ -61,7 +61,7 @@ export class OrderRecord implements OrderEntity {
 
     // List id of all orders.
     static async findIdAllOrders() {
-        const [results] = await pool.execute("SELECT * FROM `orders`") as any as SimpleOrderRecordResult;
+        const [results] = await pool.execute("SELECT * FROM `orders` ORDER BY name ASC") as any as SimpleOrderRecordResult;
         return results.map(result => {
             const {id} = result;
             return {id}

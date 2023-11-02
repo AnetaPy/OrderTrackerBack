@@ -34,7 +34,7 @@ export class OrderRecord implements OrderEntity {
     }
 
     // Find one order
-    static async getOne(id: string): Promise<OrderRecord | null> {
+    static async getOne(id: string): Promise<OrderEntity | null> {
 
         const [result] = await pool.execute("SELECT * FROM `orders`WHERE id = :id", {
             id
@@ -46,7 +46,7 @@ export class OrderRecord implements OrderEntity {
             id
         }) as any as MaterialRecordResult;
 
-        const SingleOrder:OrderEntity = new OrderRecord(result[0]);
+        const SingleOrder: OrderEntity = new OrderRecord(result[0]);
         SingleOrder.elements = resultElements;
         SingleOrder.materials = resultMaterials;
 
@@ -57,5 +57,14 @@ export class OrderRecord implements OrderEntity {
     static async findOrderInProgress(): Promise<SimpleOrderEntity> {
         const [result] = await pool.execute("SELECT id FROM `orders` WHERE status = 'w trakcie'") as any as SimpleOrderRecordResult;
         return result[0];
+    }
+
+    // List id of all orders.
+    static async findIdAllOrders() {
+        const [results] = await pool.execute("SELECT * FROM `orders`") as any as SimpleOrderRecordResult;
+        return results.map(result => {
+            const {id} = result;
+            return {id}
+        })
     }
 }

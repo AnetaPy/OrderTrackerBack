@@ -9,3 +9,9 @@ materialsRouter
         const allMaterials = await MaterialRecord.listAllMaterials();
         res.json(allMaterials);
     })
+
+    .post('/', async (req, res) => {
+        const material = new MaterialRecord(req.body);
+        await material.insertNewMaterial();
+        res.json(material);
+    })

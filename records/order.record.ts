@@ -1,4 +1,5 @@
 import {pool} from "../utils/db";
+import {v4 as uuid} from "uuid";
 import {FieldPacket} from "mysql2";
 import {ItemEntity, OrderEntity, SimpleOrderEntity} from "../types";
 import {ValidationError} from "../utils/error";
@@ -66,5 +67,17 @@ export class OrderRecord implements OrderEntity {
             const {id} = result;
             return {id}
         })
+    }
+
+    // Insert new order.
+    async insertNewOrder(): Promise<void> {
+        if (!this.id) {
+            this.id = uuid();
+        } else {
+            throw new Error('Nie można dodać zamówienia które już istnieje!')
+        }
+
+        await pool.execute("INSERT INTO `orders`(`id`, `name`, `status`, `date`, `comment`) VALUES (:id, :name, :status, :date, :comment)", this);
+
     }
 }

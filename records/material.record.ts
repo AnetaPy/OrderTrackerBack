@@ -35,7 +35,7 @@ export class MaterialRecord implements ItemEntity {
         if (!this.id) {
             this.id = uuid();
         } else {
-            throw new Error('Nie można dodać materiału któy już istnieje!')
+            throw new Error('Nie można dodać materiału który już istnieje!')
         }
 
         await pool.execute("INSERT INTO `materials`(`id`, `name`, `amount`) VALUES (:id, :name, :amount)", this)

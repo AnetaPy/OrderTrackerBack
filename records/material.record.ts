@@ -17,7 +17,7 @@ export class MaterialRecord implements ItemEntity {
     }
 
     // Find one material.
-    static async getOne(id: string): Promise<MaterialRecord | null> {
+    static async getOneMaterial(id: string): Promise<MaterialRecord | null> {
         const [results] = await pool.execute("SELECT * FROM `materials` WHERE `id` = :id", {
             id,
         }) as any as MaterialRecordResult;
@@ -47,5 +47,20 @@ export class MaterialRecord implements ItemEntity {
             id: this.id,
         })
     }
+
+    async update(): Promise<void> {
+        await pool.execute("UPDATE `materials` SET `name` = :name, `amount` = :amount WHERE `id` = :id", {
+            id: this.id,
+            name: this.name,
+            amount: this.amount,
+        });
+    }
+
+    async countMaterials(): Promise<number> {
+        const [[{amount}]] /* answer[0][0].count */ = await pool.execute("SELECT `amount` FROM `materials` WHERE `id` = :id", {
+            id: this.id,
+        })as any as MaterialRecordResult;
+        return amount;
+       }
 
 }

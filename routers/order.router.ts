@@ -2,9 +2,9 @@ import {Router} from "express";
 import {OrderRecord} from "../records/order.record";
 import {OrderEntity} from "../types";
 
-export const ordersRouter = Router();
+export const orderRouter = Router();
 
-ordersRouter
+orderRouter
 
     .get('/', async (req, res) => {
         let allOrders: OrderEntity[] = [];
@@ -14,4 +14,10 @@ ordersRouter
             allOrders.push(order)
         }
         res.json(allOrders);
+    })
+
+    .post('/', async (req, res) => {
+        const order = new OrderRecord(req.body);
+        await order.insertNewOrder();
+        res.json(order);
     })

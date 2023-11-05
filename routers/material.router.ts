@@ -43,8 +43,16 @@ materialRouter
         const newMaterial = new MaterialRecord(updatedMaterial);
         await newMaterial.update();
         res.json(material);
+    })
 
-
+    .patch('/update/:id', async (req, res) => {
+        const material = await MaterialRecord.getOneMaterial(req.params.id);
+        if (material === null) {
+            throw new ValidationError('Nie znaleziono materiału z podanym ID.');
+        }
+        const updatedMaterial = new MaterialRecord(req.body);
+        await updatedMaterial.update();
+        res.json(material);
     })
 
     .delete('/:id', async (req, res) => {

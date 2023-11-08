@@ -1,7 +1,7 @@
 import {Router} from "express";
 import {MaterialRecord} from "../records/material.record";
 import {ValidationError} from "../utils/error";
-import {RelationRecord} from "../records/relation.recor";
+import {RelationRecord} from "../records/relation.record";
 
 export const materialRouter = Router();
 
@@ -41,7 +41,7 @@ materialRouter
             amount: material.amount - Number(req.body.amount)
         }
         const newMaterial = new MaterialRecord(updatedMaterial);
-        await newMaterial.update();
+        await newMaterial.updateMaterial();
         res.json(material);
     })
 
@@ -51,7 +51,7 @@ materialRouter
             throw new ValidationError('Nie znaleziono materiału z podanym ID.');
         }
         const updatedMaterial = new MaterialRecord(req.body);
-        await updatedMaterial.update();
+        await updatedMaterial.updateMaterial();
         res.json(material);
     })
 

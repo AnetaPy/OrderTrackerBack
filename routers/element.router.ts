@@ -1,6 +1,6 @@
 import {Router} from "express";
 import {ElementRecord} from "../records/element.record";
-import {RelationRecord} from "../records/relation.recor";
+import {RelationRecord} from "../records/relation.record";
 
 export const elementRouter = Router();
 

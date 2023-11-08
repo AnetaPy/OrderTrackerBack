@@ -35,7 +35,7 @@ export class OrderRecord implements OrderEntity {
     }
 
     // Find one order
-    static async getOne(id: string): Promise<OrderEntity | null> {
+    static async getOneOrder(id: string): Promise<OrderRecord | null> {
 
         const [result] = await pool.execute("SELECT * FROM `orders`WHERE id = :id", {
             id
@@ -47,7 +47,7 @@ export class OrderRecord implements OrderEntity {
             id
         }) as any as MaterialRecordResult;
 
-        const SingleOrder: OrderEntity = new OrderRecord(result[0]);
+        const SingleOrder: OrderRecord = new OrderRecord(result[0]);
         SingleOrder.elements = resultElements;
         SingleOrder.materials = resultMaterials;
 
@@ -57,6 +57,10 @@ export class OrderRecord implements OrderEntity {
     // Find all orders but return only the id and status of each order.
     static async findOrderInProgress(): Promise<SimpleOrderEntity> {
         const [result] = await pool.execute("SELECT id FROM `orders` WHERE status = 'w trakcie'") as any as SimpleOrderRecordResult;
+        if (result.length === 0) {
+            throw new ValidationError('Nie masz zamówienia o statusie "w trakcie".');
+        }
+
         return result[0];
     }
 
@@ -78,6 +82,23 @@ export class OrderRecord implements OrderEntity {
         }
 
         await pool.execute("INSERT INTO `orders`(`id`, `name`, `status`, `date`, `comment`) VALUES (:id, :name, :status, :date, :comment)", this);
+    }
 
+    // Delete order.
+    async deleteOrder(): Promise<void> {
+        await pool.execute("DELETE FROM `orders` WHERE `id` = :id", {
+            id: this.id,
+        })
+    }
+
+    // Edit order.
+    async updateOrder(): Promise<void> {
+        await pool.execute("UPDATE `orders` SET `name` = :name, `status` = :status `date` = :date `comment` = :comment WHERE `id` = :id", {
+            id: this.id,
+            name: this.name,
+            status: this.status,
+            date: this.date,
+            comment: this.comment,
+        });
     }
 }

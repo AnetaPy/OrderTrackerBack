@@ -1,5 +1,6 @@
 import express, {json} from 'express';
 import cors from 'cors';
+import rateLimit from "express-rate-limit";
 import 'express-async-errors';
 import {handleError} from "./utils/error";
 import {homeRouter} from "./routers/home.router";
@@ -12,6 +13,11 @@ app.use(cors({
     origin: 'http://localhost:3000',
 }));
 app.use(json());
+
+app.use(rateLimit({
+    windowMs: 5 * 60 * 1000,
+    limit: 100,
+}))
 
 // Routers
 app.use('/home', homeRouter);

@@ -1,6 +1,9 @@
 import {pool} from "../utils/db";
 import {v4 as uuid} from 'uuid';
-import {RelationEntity} from "../types/relation";
+import {RelationElementEntity, RelationEntity} from "../types/relation";
+import {FieldPacket} from "mysql2";
+
+type RelationElementRecordResult = [RelationElementEntity[], FieldPacket];
 
 export class RelationRecord implements RelationEntity {
     id: string;
@@ -35,5 +38,13 @@ export class RelationRecord implements RelationEntity {
         }
 
         await pool.execute("INSERT INTO `orders_materials`(`id`, `order_id`,`material_id`, `amount`) VALUES (:id, :order_id, :item_id, :amount)", this)
+    }
+
+    // Find the element id in the orders-elements relationship.
+    static async findElementId(order_id: string): Promise<RelationElementEntity[] | null> {
+        const [result] = await pool.execute("SELECT * FROM `orders_elements`WHERE order_id = :order_id", {
+            order_id: order_id
+        }) as any as RelationElementRecordResult;
+        return result.length === 0 ? null : result;
     }
 }

@@ -48,7 +48,8 @@ export class MaterialRecord implements ItemEntity {
         })
     }
 
-    async update(): Promise<void> {
+    // Edit material.
+    async updateMaterial(): Promise<void> {
         await pool.execute("UPDATE `materials` SET `name` = :name, `amount` = :amount WHERE `id` = :id", {
             id: this.id,
             name: this.name,

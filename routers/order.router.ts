@@ -25,25 +25,15 @@ orderRouter
         res.json(order);
     })
 
-    // .patch('/:id', async (req, res) => {
-    //     const order = await MaterialRecord.getOneMaterial(req.params.id);
-    //     if (order === null) {
-    //         throw new ValidationError('Nie znaleziono zamówienia z podanym ID.');
-    //     }
-    //     if (order) {
-    //         const amountFromDatabase = await order.countMaterials();
-    //         if (Number(req.body.amount) > amountFromDatabase) {
-    //             throw new ValidationError(`Tego materiału jest za mało, zostało ${amountFromDatabase}.`);
-    //         }
-    //     }
-    //     const updatedMaterial = {
-    //         ...order,
-    //         amount: order.amount - Number(req.body.amount)
-    //     }
-    //     // const newMaterial = new OrderRecord(updatedMaterial);
-    //     // await newMaterial.updateOrder();
-    //     res.json(order);
-    // })
+    .patch('/update/:id', async (req, res) => {
+        const order = await OrderRecord.getOneOrder(req.params.id);
+        if (order === null) {
+            throw new ValidationError('Nie znaleziono zamówienia o podanym id.');
+        }
+        const updatedMaterial = new OrderRecord(req.body);
+        await updatedMaterial.updateOrder();
+        res.json(order);
+    })
 
     .delete('/:id', async (req, res) => {
         const {id} = req.params;

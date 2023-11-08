@@ -58,7 +58,7 @@ export class MaterialRecord implements ItemEntity {
     }
 
     async countMaterials(): Promise<number> {
-        const [[{amount}]] /* answer[0][0].count */ = await pool.execute("SELECT `amount` FROM `materials` WHERE `id` = :id", {
+        const [[{amount}]] = await pool.execute("SELECT `amount` FROM `materials` WHERE `id` = :id", {
             id: this.id,
         })as any as MaterialRecordResult;
         return amount;

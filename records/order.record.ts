@@ -93,7 +93,7 @@ export class OrderRecord implements OrderEntity {
 
     // Edit order.
     async updateOrder(): Promise<void> {
-        await pool.execute("UPDATE `orders` SET `name` = :name, `status` = :status `date` = :date `comment` = :comment WHERE `id` = :id", {
+        await pool.execute("UPDATE `orders` SET `name` = :name, `status` = :status, `date` = :date, `comment` = :comment WHERE `id` = :id", {
             id: this.id,
             name: this.name,
             status: this.status,

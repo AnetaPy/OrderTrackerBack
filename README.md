@@ -2,6 +2,8 @@
 
 OrderTracker App allows you to supervise all orders, materials used to complete them and the progress of each order.
 
+I am still working on logging in and registering users with full security and filtering orders on the order page. 
+
 ## Technologies
 
 Project is created with:

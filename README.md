@@ -8,7 +8,7 @@ Project is created with:
 * Node.js
 * Express.js
 * MySQL
-* 
+  
 ## Setup
 
 To run this project: 
@@ -29,4 +29,4 @@ $ npm install
 $ npm run start:dev
 ```
 
-4. Open [http://localhost:3000](http://localhost:3001) with your browser to see the result.
+4. Open [http://localhost:3001](http://localhost:3001) with your browser to see the result.

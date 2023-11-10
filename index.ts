@@ -7,6 +7,7 @@ import {homeRouter} from "./routers/home.router";
 import {orderRouter} from "./routers/order.router";
 import {materialRouter} from "./routers/material.router";
 import {elementRouter} from "./routers/element.router";
+import {userRouter} from "./routers/user.router";
 
 const app = express();
 app.use(cors({
@@ -24,6 +25,7 @@ app.use('/home', homeRouter);
 app.use('/order', orderRouter);
 app.use('/material', materialRouter);
 app.use('/element', elementRouter);
+app.use('/user', userRouter);
 
 app.use(handleError);
 
